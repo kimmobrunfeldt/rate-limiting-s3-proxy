@@ -12,6 +12,7 @@ const config = {
   PORT: optionalEnv('PORT', number, 8000),
   NODE_ENV: optionalEnv('NODE_ENV', string, 'development'),
   AWS_DEBUG: optionalEnv('AWS_DEBUG', boolean, false),
+  REQUEST_TIMEOUT: optionalEnv('REQUEST_TIMEOUT', number, 10 * 1000),
 }
 
 module.exports = config

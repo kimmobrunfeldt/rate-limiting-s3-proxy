@@ -26,9 +26,7 @@ function createApp() {
     threshold: 10,
   }))
 
-  // Initialize routes
-  const proxy = createProxy()
-  app.use('/', proxy)
+  app.use(createProxy())
 
   app.use(errorLogger())
   app.use(errorResponder())

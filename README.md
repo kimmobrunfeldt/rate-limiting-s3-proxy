@@ -7,8 +7,9 @@ Client --> Proxy --> S3
 ```
 
 S3 is a high-available, robust, and infinitely* scalable service. It's great, but there's no way set
-rate limiting which could prevent causing a $10000 bill. This proxy solves that problem, but with
+rate limiting which could prevent causing a $10000 bill. This proxy solves that, but with
 caveats. Putting this proxy in front of S3 kills high-availability, scalability and robustness.
+**You have been warned!**
 
 **Example use cases:**
 
