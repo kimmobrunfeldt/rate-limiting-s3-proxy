@@ -23,3 +23,14 @@ caveats. Putting this proxy in front of S3 kills high-availability, scalability 
 * `npm i`
 * `cp .env.sample .env` and fill in your AWS keys
 * `npm start`
+
+
+## Useful commands
+
+* `curl -XPUT -T README.md -H'content-type: text/plain' http://localhost:8080/README.md'
+* `aws s3api get-object --bucket my-bucket --key README.md README.md.copy`
+
+    Useful to test if AWS credentials work with the official CLI. Tries to download README.md file and save it as README.md.copy.
+
+    Before running this, make sure your `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
+    environment variables are set.

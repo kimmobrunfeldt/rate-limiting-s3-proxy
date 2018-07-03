@@ -19,7 +19,6 @@
     "nodemon": "^1.11.0"
   },
   "dependencies": {
-    "aws-sdk": "^2.266.1",
     "aws4": "^1.7.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.17.2",

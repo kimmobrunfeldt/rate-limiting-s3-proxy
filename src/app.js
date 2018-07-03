@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const compression = require('compression')
 const errorResponder = require('./middleware/error-responder')
 const errorLogger = require('./middleware/error-logger')
-const createProxy = require('./proxy')
+const createProxy = require('./middleware/proxy')
 const config = require('./config')
 
 function createApp() {

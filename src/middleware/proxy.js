@@ -2,8 +2,8 @@ const { URL } = require('url')
 const request = require('request')
 const aws4 = require('aws4')
 const _ = require('lodash')
-const logger = require('./util/logger')(__filename)
-const config = require('./config')
+const logger = require('../util/logger')(__filename)
+const config = require('../config')
 
 const BASE_URL = `https://s3-${config.AWS_REGION}.amazonaws.com`
 
