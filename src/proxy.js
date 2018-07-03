@@ -22,10 +22,10 @@ const HEADERS_TO_NOT_PROXY = [
   'transfer-encoding',
 ]
 
+// XXX: some paths which have query with special characters returned signature mismatch
 function sign(reqOpts, path) {
   const parts = new URL(reqOpts.url)
-  console.log(parts)
-  console.log()
+
   const signOpts = _.omitBy({
     service: 's3',
     host: parts.host,
@@ -36,18 +36,12 @@ function sign(reqOpts, path) {
     headers: reqOpts.headers,
   }, _.isUndefined)
 
-  console.log('signopts', signOpts)
-  console.log({
-    accessKeyId: config.AWS_ACCESS_KEY_ID,
-    secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
-  })
   const signature = aws4.sign(signOpts, {
     accessKeyId: config.AWS_ACCESS_KEY_ID,
     secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
   })
   return signature
 }
-
 
 function getRequestOpts(req) {
   const path = `/${config.AWS_S3_BUCKET_NAME}${req.originalUrl}`
@@ -58,14 +52,12 @@ function getRequestOpts(req) {
     timeout: config.REQUEST_TIMEOUT,
   }
 
-  console.log(req.body)
   if (req.body && !_.isEmpty(req.body)) {
     opts.body = req.body
   }
 
   const signature = sign(opts, path)
   opts.headers = signature.headers
-  console.log('final opts', opts)
 
   return opts
 }
@@ -80,7 +72,7 @@ function handleUpstreamError(err, res) {
 
 function proxyRequest(req, res) {
   const reqOpts = getRequestOpts(req)
-  console.log(reqOpts)
+
   request(reqOpts, (err) => {
     if (err) {
       handleUpstreamError(err, res)
