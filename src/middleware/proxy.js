@@ -16,6 +16,7 @@ const ERROR_CODE_TO_HTTP_STATUS = {
 }
 
 const HEADERS_TO_NOT_PROXY = [
+  'connection',
   'content-length',
   'content-md5',
   'host',
@@ -44,7 +45,8 @@ function sign(reqOpts, path) {
 }
 
 function getRequestOpts(req) {
-  console.log(JSON.stringify(req.headers))
+  logger.debug('Incoming request headers', JSON.stringify(req.headers))
+
   const headers = _.omitBy(
     _.omit(req.headers, HEADERS_TO_NOT_PROXY),
     (val, key) => _.startsWith(key.toLowerCase(), 'x-')
@@ -78,7 +80,7 @@ function handleUpstreamError(err, res) {
 
 function proxyRequest(req, res) {
   const reqOpts = getRequestOpts(req)
-  console.log('reqOpts', reqOpts)
+  logger.debug('Request opts to S3', JSON.stringify(reqOpts))
   request(reqOpts, (err) => {
     if (err) {
       handleUpstreamError(err, res)
