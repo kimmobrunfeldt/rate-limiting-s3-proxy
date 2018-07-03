@@ -34,9 +34,15 @@ Default limits:
 ⭐️ **Designed for horizontal scaling.** Optionally Redis can be used as the backing store for rate limiting. This allows you to scale multiple node processes running this proxy. By default, in-memory backed store is used.
 
 
-## Get started
+## Install
 
-First, you should have an S3 bucket and IAM user with limited access to it. Follow [these instructions](https://github.com/kimmobrunfeldt/howto-everything/blob/master/limited-s3-user-policy.md).
+1. Create an S3 bucket and IAM user which has limited access to the bucket. Follow [these instructions](https://github.com/kimmobrunfeldt/howto-everything/blob/master/limited-s3-user-policy.md).
+1. Deploy this proxy to Heroku by clicking the "Deploy to Heroku" -button at the top of this readme.
+
+
+## Get started with local development
+
+First, you should have an S3 bucket and IAM user with limited access to it. See install section.
 
 * `npm i`
 * `cp .env.sample .env` and fill in your AWS details
