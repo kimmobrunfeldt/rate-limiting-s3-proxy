@@ -36,7 +36,7 @@ Default limits:
 
 ## Install
 
-1. Create an S3 bucket and IAM user which has limited access to the bucket. Follow [these instructions](https://github.com/kimmobrunfeldt/howto-everything/blob/master/limited-s3-user-policy.md).
+1. Create an S3 bucket and IAM user which has limited access to the bucket. Follow [these instructions](https://github.com/kimmobrunfeldt/howto-everything/blob/master/limited-s3-user-policy.md) **but remove the ListBucket statement if you don't want to allow everyone to list contents of the bucket!**.
 1. Deploy this proxy to Heroku by clicking the "Deploy to Heroku" -button at the top of this readme.
 
 
