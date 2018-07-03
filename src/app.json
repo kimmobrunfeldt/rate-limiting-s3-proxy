@@ -1,0 +1,43 @@
+{
+  "name": "rate-limiting-s3-proxy",
+  "description": "Pass-through S3 proxy with rate limiting.",
+  "keywords": [
+    "s3",
+    "proxy",
+    "rate",
+    "limit",
+    "http"
+  ],
+  "website": "https://github.com/kimmobrunfeldt/rate-limiting-s3-proxy",
+  "repository": "https://github.com/kimmobrunfeldt/rate-limiting-s3-proxy",
+  "env": {
+    "MAX_BODY_SIZE": {
+      "description": "Max limit what this express app will accept as body.",
+      "value": "5mb"
+    },
+    "AWS_ACCESS_KEY_ID": {
+      "description": "AWS Access Key ID for the IAM user which has limited access to the S3 bucket",
+      "required": true
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "description": "AWS Secret Access Key for the IAM user which has limited access to the S3 bucket",
+      "required": true
+    },
+    "AWS_REGION": {
+      "description": "AWS region where the bucket is. E.g. eu-west-1",
+      "required": true
+    },
+    "AWS_S3_BUCKET_NAME": {
+      "description": "Name of the S3 bucket",
+      "required": true
+    }
+  },
+  "addons": [
+    "heroku-redis"
+  ],
+  "buildpacks": [
+    {
+      "url": "http://github.com/heroku/heroku-buildpack-nodejs.git"
+    }
+  ]
+}

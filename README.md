@@ -1,4 +1,4 @@
-# wallet-friendly-s3-proxy
+# rate-limiting-s3-proxy
 
 > Pass-through S3 proxy with rate limiting.
 
@@ -7,9 +7,9 @@ Client --> Proxy --> S3
 ```
 
 S3 is a high-available, robust, and infinitely* scalable service. It's great, but there's no way set
-rate limiting which could prevent causing a $10000 bill. This proxy solves that, but with
-caveats. Putting this proxy in front of S3 kills high-availability, scalability and robustness.
-**You have been warned!**
+rate limiting to prevent unintented huge bills. This proxy solves that, but with
+caveats. Putting this proxy in front of S3 decreases high-availability, scalability and robustness
+which AWS can provide. **You have been warned!**
 
 **Example use cases:**
 
@@ -17,11 +17,17 @@ caveats. Putting this proxy in front of S3 kills high-availability, scalability 
 * Project where you want to expose S3 publicly, but make sure it's not overused.
 
 
-
 ## Get started
 
+First, you should have an S3 bucket and IAM user with limited access to it. Follow [these instructions](https://github.com/kimmobrunfeldt/howto-everything/blob/master/limited-s3-user-policy.md).
+
 * `npm i`
-* `cp .env.sample .env` and fill in your AWS keys
+* `cp .env.sample .env` and fill in your AWS details
+* `docker-compose up -d` *Optional* To launch redis with docker
+
+    You should also uncomment REDIS_URL line in `.env` and reload envs if you want to
+    use local redis as the rate limiting store.
+
 * `npm start`
 
 

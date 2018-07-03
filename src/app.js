@@ -6,6 +6,7 @@ const compression = require('compression')
 const errorResponder = require('./middleware/error-responder')
 const errorLogger = require('./middleware/error-logger')
 const createProxy = require('./middleware/proxy')
+const createLimiter = require('./middleware/rate-limiter')
 const config = require('./config')
 
 function createApp() {
@@ -19,11 +20,13 @@ function createApp() {
     app.use(morgan('dev'))
   }
 
+  app.use(createLimiter())
+
   app.use(bodyParser.raw({
     // By default body parser matches only when content-type matches this type.
     // We want to proxy body content straight to S3 so we always want to parse the body as raw
     type: () => true,
-    limit: '5mb',
+    limit: config.MAX_BODY_SIZE,
   }))
   app.use(cors({ origin: '*' }))
   app.use(compression({
