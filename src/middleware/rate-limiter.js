@@ -19,7 +19,7 @@ const readLimiter = new RateLimit({
     client: redisClient,
   }) : undefined,
   windowMs: 5 * 60 * 1000,
-  max: 1,
+  max: 500,
   delayMs: 0,
   keyGenerator: req => `read-${req.ip}`,
 })
