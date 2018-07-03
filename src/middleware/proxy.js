@@ -44,6 +44,7 @@ function sign(reqOpts, path) {
 }
 
 function getRequestOpts(req) {
+  console.log(JSON.stringify(req.headers))
   const headers = _.omitBy(
     _.omit(req.headers, HEADERS_TO_NOT_PROXY),
     (val, key) => _.startsWith(key.toLowerCase(), 'x-')
@@ -77,7 +78,7 @@ function handleUpstreamError(err, res) {
 
 function proxyRequest(req, res) {
   const reqOpts = getRequestOpts(req)
-
+  console.log('reqOpts', reqOpts)
   request(reqOpts, (err) => {
     if (err) {
       handleUpstreamError(err, res)
