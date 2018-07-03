@@ -1,5 +1,11 @@
 /* eslint-disable no-process-env */
-const { requiredEnv, optionalEnv, number, string, boolean } = require('./util/env')
+const {
+  requiredEnv,
+  optionalEnv,
+  number,
+  string,
+  boolean
+} = require('./util/env')
 
 const config = {
   // Required
