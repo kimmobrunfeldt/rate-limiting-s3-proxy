@@ -1,40 +1,78 @@
+const { URL } = require('url')
 const request = require('request')
 const aws4 = require('aws4')
 const _ = require('lodash')
 const logger = require('./util/logger')(__filename)
 const config = require('./config')
 
-const BASE_URL = `https://s3-${config.AWS_REGION}.amazonaws.com/${config.AWS_S3_BUCKET_NAME}`
+const BASE_URL = `https://s3-${config.AWS_REGION}.amazonaws.com`
 
-// If the upstream (S3) call causes one of these errors, we'll respond with 503
+// If the upstream (S3) call causes one of these errors, we'll respond with corresponding
+// http status
 // Error code reference: https://nodejs.org/api/errors.html#errors_common_system_errors
-const SERVICE_UNAVAILABLE_ERRORS = ['ECONNRESET', 'ETIMEDOUT']
+const ERROR_CODE_TO_HTTP_STATUS = {
+  ECONNRESET: 503,
+  ETIMEDOUT: 503,
+}
+
 const HEADERS_TO_NOT_PROXY = [
-  'content-encoding',
   'content-length',
   'content-md5',
   'host',
   'transfer-encoding',
 ]
 
+function sign(reqOpts, path) {
+  const parts = new URL(reqOpts.url)
+  console.log(parts)
+  console.log()
+  const signOpts = _.omitBy({
+    service: 's3',
+    host: parts.host,
+    method: reqOpts.method,
+    path,
+    body: reqOpts.body,
+    region: config.AWS_REGION,
+    headers: reqOpts.headers,
+  }, _.isUndefined)
+
+  console.log('signopts', signOpts)
+  console.log({
+    accessKeyId: config.AWS_ACCESS_KEY_ID,
+    secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+  })
+  const signature = aws4.sign(signOpts, {
+    accessKeyId: config.AWS_ACCESS_KEY_ID,
+    secretAccessKey: config.AWS_SECRET_ACCESS_KEY,
+  })
+  return signature
+}
+
+
 function getRequestOpts(req) {
+  const path = `/${config.AWS_S3_BUCKET_NAME}${req.originalUrl}`
   const opts = {
-    url: BASE_URL + req.originalUrl,
+    url: BASE_URL + path,
     method: req.method,
     headers: _.omit(req.headers, HEADERS_TO_NOT_PROXY),
     timeout: config.REQUEST_TIMEOUT,
   }
 
+  console.log(req.body)
   if (req.body && !_.isEmpty(req.body)) {
     opts.body = req.body
   }
+
+  const signature = sign(opts, path)
+  opts.headers = signature.headers
+  console.log('final opts', opts)
 
   return opts
 }
 
 function handleUpstreamError(err, res) {
-  if (_.includes(SERVICE_UNAVAILABLE_ERRORS, err.code)) {
-    return res.sendStatus(503)
+  if (_.has(ERROR_CODE_TO_HTTP_STATUS, err.code)) {
+    return res.sendStatus(ERROR_CODE_TO_HTTP_STATUS[err.code])
   }
 
   return res.sendStatus(500)

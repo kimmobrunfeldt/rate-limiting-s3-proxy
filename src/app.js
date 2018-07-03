@@ -19,7 +19,12 @@ function createApp() {
     app.use(morgan('dev'))
   }
 
-  app.use(bodyParser.raw({ limit: '5mb' }))
+  app.use(bodyParser.raw({
+    // By default body parser matches only when content-type matches this type.
+    // We want to proxy body content straight to S3 so we always want to parse the body as raw
+    type: () => true,
+    limit: '5mb',
+  }))
   app.use(cors({ origin: '*' }))
   app.use(compression({
     // Compress everything over 10 bytes
