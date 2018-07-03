@@ -44,11 +44,16 @@ function sign(reqOpts, path) {
 }
 
 function getRequestOpts(req) {
+  const headers = _.omitBy(
+    _.omit(req.headers, HEADERS_TO_NOT_PROXY),
+    (val, key) => _.startsWith(key.toLowerCase(), 'x-')
+  )
+
   const path = `/${config.AWS_S3_BUCKET_NAME}${req.originalUrl}`
   const opts = {
     url: BASE_URL + path,
     method: req.method,
-    headers: _.omit(req.headers, HEADERS_TO_NOT_PROXY),
+    headers,
     timeout: config.REQUEST_TIMEOUT,
   }
 
