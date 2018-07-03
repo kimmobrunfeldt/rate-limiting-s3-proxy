@@ -50,7 +50,7 @@ First, you should have an S3 bucket and IAM user with limited access to it. Foll
 
 ## Useful commands
 
-* `curl -XPUT -T README.md -H'content-type: text/plain' http://localhost:8080/README.md'
+* `curl -XPUT -T README.md -H'content-type: text/plain' http://localhost:8080/README.md`
 * `aws s3api get-object --bucket my-bucket --key README.md README.md.copy`
 
     Useful to test if AWS credentials work with the official CLI. Tries to download README.md file and save it as README.md.copy.
