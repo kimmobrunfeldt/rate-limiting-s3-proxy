@@ -15,7 +15,7 @@ if (config.REDIS_URL) {
 
 const readLimiter = new RateLimit({
   store: redisClient ? new RedisStore({
-    expiry: 5 * 60 * 1000,
+    expiry: 5 * 60,
     client: redisClient,
   }) : undefined,
   windowMs: 5 * 60 * 1000,
@@ -25,7 +25,7 @@ const readLimiter = new RateLimit({
 })
 const writeLimiter = new RateLimit({
   store: redisClient ? new RedisStore({
-    expiry: 15 * 60 * 1000,
+    expiry: 15 * 60,
     client: redisClient,
   }) : undefined,
   windowMs: 15 * 60 * 1000,
