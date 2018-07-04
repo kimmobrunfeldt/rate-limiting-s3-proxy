@@ -21,6 +21,10 @@ const config = {
   // If defined, will use the specified redis as the rate limiting store
   REDIS_URL: optionalEnv('REDIS_URL', string, undefined),
   REQUEST_TIMEOUT: optionalEnv('REQUEST_TIMEOUT', number, 10 * 1000),
+  RATE_LIMIT_READ_TIME_WINDOW_IN_MINS: optionalEnv('RATE_LIMIT_READ_TIME_WINDOW_IN_MINS', number, 5),
+  RATE_LIMIT_WRITE_TIME_WINDOW_IN_MINS: optionalEnv('RATE_LIMIT_WRITE_TIME_WINDOW_IN_MINS', number, 10),
+  RATE_LIMIT_MAX_READ_REQUESTS_IN_TIME_WINDOW: optionalEnv('RATE_LIMIT_MAX_READ_REQUESTS_IN_TIME_WINDOW', number, 500),
+  RATE_LIMIT_MAX_WRITE_REQUESTS_IN_TIME_WINDOW: optionalEnv('RATE_LIMIT_MAX_WRITE_REQUESTS_IN_TIME_WINDOW', number, 50),
   // Max limit what this express app will accept as body
   // Value is parsed with https://www.npmjs.com/package/bytes
   MAX_BODY_SIZE: optionalEnv('MAX_BODY_SIZE', string, '5mb'),

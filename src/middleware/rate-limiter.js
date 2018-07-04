@@ -15,21 +15,21 @@ if (config.REDIS_URL) {
 
 const readLimiter = new RateLimit({
   store: redisClient ? new RedisStore({
-    expiry: 5 * 60,
+    expiry: config.RATE_LIMIT_READ_TIME_WINDOW_IN_MINS * 60,
     client: redisClient,
   }) : undefined,
-  windowMs: 5 * 60 * 1000,
-  max: 500,
+  windowMs: config.RATE_LIMIT_READ_TIME_WINDOW_IN_MINS * 60 * 1000,
+  max: config.RATE_LIMIT_MAX_READ_REQUESTS_IN_TIME_WINDOW,
   delayMs: 0,
   keyGenerator: req => `read-${req.ip}`,
 })
 const writeLimiter = new RateLimit({
   store: redisClient ? new RedisStore({
-    expiry: 15 * 60,
+    expiry: config.RATE_LIMIT_WRITE_TIME_WINDOW_IN_MINS * 60,
     client: redisClient,
   }) : undefined,
-  windowMs: 15 * 60 * 1000,
-  max: 30,
+  windowMs: config.RATE_LIMIT_WRITE_TIME_WINDOW_IN_MINS * 60 * 1000,
+  max: config.RATE_LIMIT_MAX_WRITE_REQUESTS_IN_TIME_WINDOW,
   delayMs: 0,
   keyGenerator: req => `write-${req.ip}`,
 })
