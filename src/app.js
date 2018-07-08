@@ -20,8 +20,6 @@ function createApp() {
     app.use(morgan('dev'))
   }
 
-  app.use(createLimiter())
-
   app.use(bodyParser.raw({
     // By default body parser matches only when content-type matches this type.
     // We want to proxy body content straight to S3 so we always want to parse the body as raw
@@ -37,6 +35,7 @@ function createApp() {
     threshold: 10,
   }))
 
+  app.use(createLimiter())
   app.use(createProxy())
 
   app.use(errorLogger())
