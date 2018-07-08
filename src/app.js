@@ -28,7 +28,10 @@ function createApp() {
     type: () => true,
     limit: config.MAX_BODY_SIZE,
   }))
-  app.use(cors({ origin: '*' }))
+
+  const corsMiddleware = cors()
+  app.options('*', corsMiddleware)
+  app.use(corsMiddleware)
   app.use(compression({
     // Compress everything over 10 bytes
     threshold: 10,
