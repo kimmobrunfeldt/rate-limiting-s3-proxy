@@ -80,7 +80,12 @@ function handleUpstreamError(err, res) {
 
 function proxyRequest(req, res) {
   const reqOpts = getRequestOpts(req)
-  logger.debug('Request opts to S3', JSON.stringify(reqOpts))
+
+  const loggableOpts = _.omit(reqOpts, ['body'])
+  // Logging a 5MB body buffer is not very good
+  loggableOpts.body = 'REMOVED FOR PRACTICAL REASONS'
+  logger.debug('Request opts to S3', JSON.stringify(loggableOpts))
+
   request(reqOpts, (err) => {
     if (err) {
       handleUpstreamError(err, res)
