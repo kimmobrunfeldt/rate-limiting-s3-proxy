@@ -29,7 +29,7 @@ which AWS can provide. **You have been warned!** ⚠️
 
 Default limits:
 * 500 read operations (GET, HEAD, OPTIONS) in 5 minute time window
-* 30 write operations (all other methods) in 15 minute time window
+* 50 write operations (all other methods) in 10 minute time window
 
 ⭐️ **Designed for horizontal scaling.** Optionally Redis can be used as the backing store for rate limiting. This allows you to scale multiple node processes running this proxy. By default, in-memory backed store is used.
 
