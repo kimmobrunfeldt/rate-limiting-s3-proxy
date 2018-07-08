@@ -71,6 +71,8 @@ function getRequestOpts(req) {
 }
 
 function handleUpstreamError(err, res) {
+  logger.error('Error when requesting upstream:', err)
+
   if (_.has(ERROR_CODE_TO_HTTP_STATUS, err.code)) {
     return res.sendStatus(ERROR_CODE_TO_HTTP_STATUS[err.code])
   }
