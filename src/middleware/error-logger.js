@@ -23,7 +23,10 @@ function deepSupressLongStrings(obj) {
 function logRequestDetails(log, req) {
   log('Request headers:', deepSupressLongStrings(req.headers))
   log('Request parameters:', deepSupressLongStrings(req.params))
-  log('Request body:', deepSupressLongStrings(req.body))
+
+  if (_.includes(req.headers['content-type'], 'json')) {
+    log('Request body:', deepSupressLongStrings(req.body))
+  }
 }
 
 function createErrorLogger(_opts) {
