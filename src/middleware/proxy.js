@@ -88,11 +88,13 @@ function proxyRequest(req, res) {
   loggableOpts.body = 'REMOVED FOR PRACTICAL REASONS'
   logger.debug('Request opts to S3', JSON.stringify(loggableOpts))
 
-  request(reqOpts, (err) => {
-    if (err) {
-      handleUpstreamError(err, res)
-    }
-  }).pipe(res)
+  request(reqOpts)
+    .on('error', (err) => {
+      if (err) {
+        handleUpstreamError(err, res)
+      }
+    })
+    .pipe(res)
 }
 
 function createProxy() {
